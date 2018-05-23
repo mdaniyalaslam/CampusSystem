@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+
+.userName{
+  text-transform: capitalize;
+  color: blue;
+
+}
+
+.col1of2, .col1of2{
+  float: left;
+ border: 1px dashed blue;
+ margin: 5px;
+ padding: 5px
+}
+
+.col1of2{
+  width: 20%
+}
+.col1of2{
+  width: 60%
+}
+
+.col1of2 h2:hover{
+  background-color: blue;
+  color: white
+}
+.alignRight{
+  float: right;
+  border: 1px solid blue;
+  padding: 5px;
+  border-radius: 10px;
+  display: inline-block;
+
+}
