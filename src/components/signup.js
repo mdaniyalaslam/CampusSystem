@@ -36,7 +36,8 @@ class Signup extends Component {
         this.state = {
             email: '',
             userName: '',
-            password: ''
+            password: '',
+            check: ''
         }
 
 
@@ -44,22 +45,41 @@ class Signup extends Component {
         this._onChangeEmail = this._onChangeEmail.bind(this);
         this._onChangeUserName = this._onChangeUserName.bind(this);
         this._onChangePassword = this._onChangePassword.bind(this);
+        this.checker = this.checker.bind(this)
 
     }
 
 
+
+
     signup() {
-        let user = {
+        let check = this.state.check
+        let studentInfo = {
             email: this.state.email,
             username: this.state.userName,
-            password: this.state.password
+            password: this.state.password,
+            user: check
         }
+        let companyInfo = {
+            email: this.state.email,
+            username: this.state.userName,
+            password: this.state.password,
+            user: check
+        }
+
+        if (check === 'student'){
+            this.props.signupwithEmailPassword(studentInfo)
+        }
+        else (
+            this.props.signupwithEmailPassword(companyInfo)
+        )
+
+
         this.setState({
             email: '',
             userName: '',
-            password: ''
+            password: '',
         })
-        this.props.signupwithEmailPassword(user);
     }
     _onChangeEmail(event) {
         this.setState({
@@ -77,13 +97,26 @@ class Signup extends Component {
         })
     }
 
+    checker(e) {
+        let check = this.state.check
+        console.log(check, "radion vlue")
+        // bharwy koi garbar nhi hai phele set kar raha hai baad me print
+
+        this.setState({ check: e.target.value })
+        // this.setState({
+        //     check : e.target.value,
+        // })
+
+    }
+
+
     render() {
         return (
             <div className="row">
                 <div className="col"></div>
                 <div className="col-sm-4">
                     <Paper style={styles.paper} zDepth={2} >
-                    <h1>Signup</h1>
+                        <h1>Signup</h1>
                         <TextField floatingLabelText="Email"
                             hintText="Enter Email Here"
                             name="email"
@@ -102,16 +135,19 @@ class Signup extends Component {
 
                         <RadioButtonGroup style={{ display: "flex" }} name="shipSpeed" defaultSelected="not_light">
                             <RadioButton
-                                value="light"
+                                value="student"
                                 label="Student"
                                 style={styles.radioButton}
+                                onClick={this.checker}
                             />
                             <RadioButton
-                                value="not_light"
-                                label="Teacher"
+                                value="company"
+                                label="Company"
                                 style={styles.radioButton}
+                                onClick={this.checker}
                             />
                         </RadioButtonGroup>
+
                         <RaisedButton label="Signup"
                             style={styles.btn}
                             primary={true}
@@ -133,9 +169,8 @@ function mapStateToProp(state) {
 function mapDispatchToProp(dispatch) {
     return ({
         // changeUserName: ()=>{dispatch(changeUserName())}
-        signupwithEmailPassword: (userDetails) => {
-            dispatch(signupAction(userDetails));
-        }
+        signupwithEmailPassword: (info) => { dispatch(signupAction(info)); }
+
     })
 }
 

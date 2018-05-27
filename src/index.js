@@ -7,14 +7,15 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 
 ReactDOM.render(
-        <MuiThemeProvider>
-
+    <MuiThemeProvider>
+        <div>
             <AppBar
                 title="Campus Recruitment System"
                 iconClassNameRight="muidocs-icon-navigation-expand-more"
             />
             <App />
-        </MuiThemeProvider>
-        , document.getElementById('root')
+        </div>
+    </MuiThemeProvider>
+    , document.getElementById('root')
 );
 registerServiceWorker();
