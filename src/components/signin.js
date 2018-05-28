@@ -8,7 +8,7 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
 const styles = {
     paper: {
-        height: 400,
+        height: 440,
         width: 350,
         margin: 40,
         textAlign: 'center',
@@ -19,6 +19,9 @@ const styles = {
     },
     btn: {
         margin: 12,
+        marginTop: 20,
+        width: 300
+        
     },
     block: {
         maxWidth: 250,
@@ -110,7 +113,7 @@ class Signin extends Component {
             <div className="row">
                 <div className="col"></div>
                 <div className="col-sm-4">
-                    <Paper style={styles.paper} zDepth={2} >
+                    <Paper style={styles.paper} zDepth={5} >
                         <h1>Signin</h1>
                         <TextField floatingLabelText="Email"
                             hintText="Enter Email Here"
@@ -142,7 +145,7 @@ class Signin extends Component {
                         <RaisedButton label="Signin"
                             style={styles.btn}
                             primary={true}
-                            onClick={this.signuin}
+                            onClick={this.signin}
                         />
                     </Paper>
                 </div>

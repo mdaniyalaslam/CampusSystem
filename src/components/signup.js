@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { signupAction } from '../store/action/action';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
@@ -18,6 +19,7 @@ const styles = {
     },
     btn: {
         margin: 12,
+        width: 300
     },
     block: {
         maxWidth: 250,
@@ -116,7 +118,7 @@ class Signup extends Component {
             <div className="row">
                 <div className="col"></div>
                 <div className="col-sm-4">
-                    <Paper style={styles.paper} zDepth={2} >
+                    <Paper style={styles.paper} zDepth={5} >
                         <h1>Signup</h1>
                         <TextField floatingLabelText="Email"
                             hintText="Enter Email Here"
@@ -149,12 +151,12 @@ class Signup extends Component {
                             />
                         </RadioButtonGroup>
 
-                        <p>Already Have an account?</p>
                         <RaisedButton label="Signup"
                             style={styles.btn}
                             primary={true}
                             onClick={this.signup}
                         />
+                        <p>Already Have an account? <Link to="signin">Signin</Link> here!</p> 
                     </Paper>
                 </div>
                 <div className="col"></div>

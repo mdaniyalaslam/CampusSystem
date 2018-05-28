@@ -4,6 +4,7 @@ import { Route, Router } from 'react-router-dom';
 // import About from './components/about';
 import Signup from './components/signup';
 import Signin from './components/signin';
+import StudentPage from './components/studentPage';
 
 // import Chat from './components/chat';
 // import Navbar from './components/navbar';
@@ -20,7 +21,7 @@ class Routers extends Component {
                 <div>
                     <hr />
                     <Route exact path="/" component={Signup} />
-                    {/* <Route exact path="/about" component={About} /> */}
+                    <Route  path="/studentPage" component={StudentPage} />
                     {/* <Route exact path="/signup" component={Signup} /> */}
                     <Route path="/signin" component={Signin} />
                     {/* <Route exact path="/chat" component={Chat} /> */}

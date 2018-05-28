@@ -18,7 +18,7 @@ var config = {
   firebase.initializeApp(config);
 
 
-
+//SignupAction/////////////////////////////////////////
 export function signupAction(info) {
     return dispatch => {
         let user = info.user
@@ -54,16 +54,27 @@ export function signupAction(info) {
     }
 }
 
+
+
+
+//SigninAction/////////////////////////////////////////
 export function signinAction(info) {
     return dispatch => {
         let user = info.user
+        
         if (user === 'student'){
-            firebase.auth().createUserWithEmailAndPassword(info.email, info.password)
-            .then((signedUpStudent) => {
-                let studentId = signedUpStudent.uid
-                alert('Signup Successfull !')
-                firebase.database().ref('/').child(`campusRecruitmentUsers/Students/${studentId}`).set(info)
-                history.push('/signin');
+            firebase.auth().signInWithEmailAndPassword(info.email, info.password)
+            .then((signedInStudent) => {
+                let studentId = signedInStudent.uid
+                // console.log('studentId', studentId)
+                // alert('Signin Successfull !')
+                
+                firebase.database().ref('/').child(`campusRecruitmentUsers/Students/${studentId}`).once('value', (snap)=>{
+                    console.log('snap')
+
+                })
+
+                // history.push('/studentPage');
                 
             })
             .catch((error) => {
@@ -72,7 +83,7 @@ export function signinAction(info) {
             })
         }
         else{
-            firebase.auth().createUserWithEmailAndPassword(info.email, info.password)
+            firebase.auth().signInWithEmailAndPassword(info.email, info.password)
             .then((signedUpCompany) => {
                 let companyId = signedUpCompany.uid
                 
@@ -91,22 +102,3 @@ export function signinAction(info) {
 
 
 
-// firebase.auth().signInWithEmailAndPassword(info.email, info.password)
-        //     .then((signedInStudent) => {
-        //         let studentId = signedInStudent.uid
-        //         firebase.database().ref('users/students/').push(signedInStudent)
-        //         .then((userData) => {
-        //             if (userData.val() === null) {
-        //                 alert("user not found");
-        //                 signedInStudent.delete()
-        //                 history.push('/companypage')
-        //             } else {
-        //                 setTimeout(() => {
-        //                     history.push('/jobpost');
-        //                 }, 2000)
-        //             }
-        //         })
-        //     })
-        //     .catch((error) => {
-        //         dispatch({ type: ActionTypes.ERRORCOMPANYSN, payload: error.message });
-        //     })
