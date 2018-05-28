@@ -8,12 +8,13 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
 const styles = {
     paper: {
-        height: 400,
+        height: 440,
         width: 350,
         margin: 20,
         textAlign: 'center',
         display: 'inline-block',
         padding: 10,
+        borderRadius : 15
     },
     btn: {
         margin: 12,
@@ -148,6 +149,7 @@ class Signup extends Component {
                             />
                         </RadioButtonGroup>
 
+                        <p>Already Have an account?</p>
                         <RaisedButton label="Signup"
                             style={styles.btn}
                             primary={true}

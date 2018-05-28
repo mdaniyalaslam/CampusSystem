@@ -14,6 +14,8 @@ const styles = {
         textAlign: 'center',
         display: 'inline-block',
         padding: 10,
+        borderRadius : 15
+        
     },
     btn: {
         margin: 12,
