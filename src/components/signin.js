@@ -43,7 +43,8 @@ class Signin extends Component {
             email: '',
             userName: '',
             password: '',
-            check: ''
+            check: '',
+            error : ''
         }
 
 
@@ -82,6 +83,7 @@ class Signin extends Component {
             email: '',
             userName: '',
             password: '',
+            error: this.props.error
         })
     }
     _onChangeEmail(event) {
@@ -119,6 +121,7 @@ class Signin extends Component {
                         <TextField floatingLabelText="Email"
                             hintText="Enter Email Here"
                             name="email"
+                            errorText={this.state.error}
                             value={this.state.email} onChange={this._onChangeEmail}
                         />
          
@@ -147,9 +150,11 @@ class Signin extends Component {
                             style={styles.btn}
                             primary={true}
                             onClick={this.signin}
-                        />
+                            />
                         <br/>
                         <p>Don't Have an account? <Link to="signup">Signup</Link> here!</p> 
+                            <span style={{color:'red'}}>{this.props.error}</span>
+                            <span style={{color:'red'}}>{this.props.radioError}</span>
                         
                     </Paper>
                 </div>
@@ -162,6 +167,8 @@ class Signin extends Component {
 function mapStateToProp(state) {
     return ({
         // userName: state.root.userName
+        error: state.root.error,
+        radioError: state.root.radioError
     })
 }
 function mapDispatchToProp(dispatch) {

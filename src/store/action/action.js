@@ -100,10 +100,11 @@ export function signinAction(info) {
             })
             .catch((error) => {
                 console.log(error.message)
-                // dispatch({ type: ActionTypes.ERRORCOMPANYSN, payload: error.message });
+                dispatch({ type: ActionTypes.ERROR, payload: error.message });
             })
         }
-        else alert('Who you are ?')
+        else  dispatch({ type: ActionTypes.RADIOERROR, payload: 'Please select Signin Type' });
+       
     }
 }
 

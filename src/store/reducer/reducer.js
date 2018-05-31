@@ -5,15 +5,23 @@ const INITIAL_STATE = {
     currentUser:'',
     users: [],
     messages: {},
-    recipientID: ''
+    radioError: '',
+    error:''
 }
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case ActionTypes.USERNAME:
+
+        case ActionTypes.ERROR:
+            return ({
+                
+                ...state,
+                error: action.payload
+            })
+        case ActionTypes.RADIOERROR:
             return ({
                 ...state,
-                userName: action.payload
+                radioError: action.payload
             })
         case ActionTypes.CURRENTUSER:
             return ({
