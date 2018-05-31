@@ -70,7 +70,10 @@ export function signinAction(info) {
                 // alert('Signin Successfull !')
                 
                 firebase.database().ref('/').child(`campusRecruitmentUsers/Students/${studentId}`).once('value', (snap)=>{
-                    console.log('snap')
+                    console.log('snap',snap.key)
+                    if(snap.key !== null){
+                        history.push('/')
+                    }
 
                 })
 
@@ -82,19 +85,25 @@ export function signinAction(info) {
                 // dispatch({ type: ActionTypes.ERRORCOMPANYSN, payload: error.message });
             })
         }
-        else{
+        else if (user === 'company'){
             firebase.auth().signInWithEmailAndPassword(info.email, info.password)
             .then((signedUpCompany) => {
                 let companyId = signedUpCompany.uid
                 
-                alert('Signup Successfull !')
-                firebase.database().ref('/').child(`campusRecruitmentUsers/Company/${companyId}`).set(info)
+                firebase.database().ref('/').child(`campusRecruitmentUsers/Company/${companyId}`).set(info).once('value', (snap)=>{
+                    console.log('snap',snap.key)
+                    if(snap.key !== null){
+                        history.push('/')
+                    }
+
+                })
             })
             .catch((error) => {
                 console.log(error.message)
                 // dispatch({ type: ActionTypes.ERRORCOMPANYSN, payload: error.message });
             })
         }
+        else alert('Who you are ?')
     }
 }
 

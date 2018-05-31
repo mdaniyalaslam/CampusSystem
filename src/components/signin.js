@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signinAction } from '../store/action/action';
+import { Link } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -96,8 +97,8 @@ class Signin extends Component {
     }
 
     checker(e) {
-        let check = this.state.check
-        console.log(check, "radion vlue")
+        let checked = this.state.check
+        console.log(checked, "radio btn vlue")
         // bharwy koi garbar nhi hai phele set kar raha hai baad me print
 
         this.setState({ check: e.target.value })
@@ -127,7 +128,7 @@ class Signin extends Component {
                             value={this.state.password} onChange={this._onChangePassword}
                         />
 
-                        <RadioButtonGroup style={{ display: "flex" }} name="shipSpeed" defaultSelected="not_light">
+                        <RadioButtonGroup style={{ display: "flex" }} name="shipSpeed">
                             <RadioButton
                                 value="student"
                                 label="Student"
@@ -147,6 +148,9 @@ class Signin extends Component {
                             primary={true}
                             onClick={this.signin}
                         />
+                        <br/>
+                        <p>Don't Have an account? <Link to="signup">Signup</Link> here!</p> 
+                        
                     </Paper>
                 </div>
                 <div className="col"></div>

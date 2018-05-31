@@ -6,9 +6,11 @@ import registerServiceWorker from './registerServiceWorker';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 
+
+
 ReactDOM.render(
-    <MuiThemeProvider>
-        <div>
+    <MuiThemeProvider >
+        <div >
             <AppBar
                 title="Campus Recruitment System"
                 iconClassNameRight="muidocs-icon-navigation-expand-more"

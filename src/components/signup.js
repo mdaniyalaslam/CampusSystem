@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { signupAction } from '../store/action/action';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
+
 const styles = {
+
+    // img:{
+    //     width: '100%',
+    //     backgroundImage : `url(${Background})`
+    // },
+
     paper: {
         height: 440,
         width: 350,
@@ -156,7 +162,6 @@ class Signup extends Component {
                             primary={true}
                             onClick={this.signup}
                         />
-                        <p>Already Have an account? <Link to="signin">Signin</Link> here!</p> 
                     </Paper>
                 </div>
                 <div className="col"></div>
