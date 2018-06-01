@@ -117,7 +117,8 @@ class CompanyPage extends Component {
                     onChange={this.handleChange}
                     value={this.state.slideIndex}
                 >
-                    <Tab label="All Job Posts" value={0} />
+                    
+                    <Tab style={{backgroundColor:"white", color:'black'}} label="All Job Posts" value={0} />
                 </Tabs>
                 <FloatingActionButton style={styles.addBtn}>
                     <ContentAdd
