@@ -28,7 +28,7 @@ export function signupAction(info) {
                 let studentId = signedUpStudent.uid
                 alert('Signup Successfull !')
                 firebase.database().ref('/').child(`campusRecruitmentUsers/Students/${studentId}`).set(info)
-                history.push('/signin');
+                history.push('/');
                 
             })
             .catch((error) => {
@@ -43,7 +43,7 @@ export function signupAction(info) {
                 
                 alert('Signup Successfull !')
                 firebase.database().ref('/').child(`campusRecruitmentUsers/Company/${companyId}`).set(info)
-                history.push('/signin');
+                history.push('/');
                 
             })
             .catch((error) => {
@@ -69,15 +69,17 @@ export function signinAction(info) {
                 // console.log('studentId', studentId)
                 // alert('Signin Successfull !')
                 
-                firebase.database().ref('/').child(`campusRecruitmentUsers/Students/${studentId}`).once('value', (snap)=>{
-                    console.log('snap',snap.key)
-                    if(snap.key !== null){
-                        history.push('/')
+                firebase.database().ref('/').child(`campusRecruitmentUsers/Students/${studentId}`).once('value')
+                .then((snap)=>{
+                    
+                    // console.log('snap',snap.key)
+                    if(snap.val() !== null){
+                        history.push('/studentPage')
                     }
-
+                    else alert('User Not found!')
+                    
                 })
 
-                // history.push('/studentPage');
                 
             })
             .catch((error) => {
@@ -90,12 +92,14 @@ export function signinAction(info) {
             .then((signedUpCompany) => {
                 let companyId = signedUpCompany.uid
                 
-                firebase.database().ref('/').child(`campusRecruitmentUsers/Company/${companyId}`).set(info).once('value', (snap)=>{
-                    console.log('snap',snap.key)
-                    if(snap.key !== null){
-                        history.push('/')
+                firebase.database().ref('/').child(`campusRecruitmentUsers/Company/${companyId}`).once('value')
+                .then ((snap)=>{
+                    console.log('snap',snap.val())
+                    
+                    if(snap.val() !== null){
+                        history.push('/companyPage')
                     }
-
+                    else alert('User Not found!')
                 })
             })
             .catch((error) => {

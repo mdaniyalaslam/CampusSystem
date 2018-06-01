@@ -32,7 +32,6 @@ const styles = {
         marginBottom: 16,
         marginLeft: 20,
     },
-
 };
 
 class Signin extends Component {
@@ -121,7 +120,7 @@ class Signin extends Component {
                         <TextField floatingLabelText="Email"
                             hintText="Enter Email Here"
                             name="email"
-                            errorText={this.state.error}
+                            // errorText={this.state.error}
                             value={this.state.email} onChange={this._onChangeEmail}
                         />
          
@@ -153,6 +152,8 @@ class Signin extends Component {
                             />
                         <br/>
                         <p>Don't Have an account? <Link to="signup">Signup</Link> here!</p> 
+
+                        {/* Handling errors */}
                             <span style={{color:'red'}}>{this.props.error}</span>
                             <span style={{color:'red'}}>{this.props.radioError}</span>
                         
@@ -166,7 +167,6 @@ class Signin extends Component {
 
 function mapStateToProp(state) {
     return ({
-        // userName: state.root.userName
         error: state.root.error,
         radioError: state.root.radioError
     })

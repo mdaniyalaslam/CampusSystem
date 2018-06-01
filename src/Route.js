@@ -5,6 +5,7 @@ import { Route, Router } from 'react-router-dom';
 import Signup from './components/signup';
 import Signin from './components/signin';
 import StudentPage from './components/studentPage';
+import CompanyPage from './components/companyPage';
 
 
 // import Chat from './components/chat';
@@ -24,10 +25,9 @@ class Routers extends Component {
                 <div >
                     
                     <Route exact path="/" component={Signin} />
-                    <Route  path="/studentPage" component={StudentPage} />
-                    {/* <Route exact path="/signup" component={Signup} /> */}
+                    {/* <Route  path="/studentPage" component={StudentPage} /> */}
+                    <Route  path="/companyPage" component={CompanyPage} />
                     <Route path="/signup" component={Signup} />
-                    {/* <Route exact path="/chat" component={Chat} /> */}
                     
                 </div>
             </Router>
