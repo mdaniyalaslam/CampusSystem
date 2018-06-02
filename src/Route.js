@@ -25,7 +25,7 @@ class Routers extends Component {
                 <div >
                     
                     <Route exact path="/" component={Signin} />
-                    {/* <Route  path="/studentPage" component={StudentPage} /> */}
+                    <Route  path="/studentPage" component={StudentPage} />
                     <Route  path="/companyPage" component={CompanyPage} />
                     <Route path="/signup" component={Signup} />
                     

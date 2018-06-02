@@ -3,7 +3,8 @@ import ActionTypes from '../constant/constant';
 const INITIAL_STATE = {
 
     radioError: '',
-    error:''
+    error:'',
+    currentCompanyJobs:'',
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -19,6 +20,11 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 radioError: action.payload
+            })
+        case ActionTypes.CURRENTCOMPANYJOBS:
+            return ({
+                ...state,
+                currentCompanyJobs: action.payload
             })
        
         default:

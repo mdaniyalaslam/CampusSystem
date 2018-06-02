@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Routers from './Route';
 import {Provider} from 'react-redux';
 import store from './store';
-import { Divider } from 'material-ui';
+// import { Divider } from 'material-ui';
 
 // import Background from './img/material.jpg'
 
