@@ -141,7 +141,7 @@ class CompanyPage extends Component {
                 onClick={this._submit}
             />,
         ];
-
+        
         if (this.props.currentCompanyJobs.length === 0) {
             return <div>
                 <AppBar
@@ -323,7 +323,7 @@ function mapStateToProp(state) {
 function mapDispatchToProp(dispatch) {
     return ({
         submitDetails: (jobDetails) => { dispatch(submitAction(jobDetails)) },
-        fetchFirebase: (jobDetails) => { dispatch(fetchFirebaseAction(jobDetails)) },
+        fetchFirebase: () => { dispatch(fetchFirebaseAction()) },
         deleteJob: (key) => { dispatch(deleteJobAction(key)) },
         signout: (key) => { dispatch(signoutAction(key)) }
     })

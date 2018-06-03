@@ -5,9 +5,11 @@ const INITIAL_STATE = {
     radioError: '',
     error:'',
     currentCompanyJobs:'',
+    allCompanyJobs:''
 }
 
 export default (state = INITIAL_STATE, action) => {
+    
     switch (action.type) {
 
         case ActionTypes.ERROR:
@@ -25,6 +27,12 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 currentCompanyJobs: action.payload
+            })
+        case ActionTypes.ALLCOMPANYJOBS:
+        
+            return ({
+                ...state,
+                allCompanyJobs: action.payload
             })
        
         default:
