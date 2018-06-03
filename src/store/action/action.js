@@ -121,39 +121,71 @@ export function submitAction(jobDetails) {
         firebase.auth().onAuthStateChanged((user) => {
 
             firebase.database().ref('/RecruitmentJobs').child(user.uid).push(jobDetails)
-            .then((snap) =>{
-                let id = snap.key
-            firebase.database().ref('/RecruitmentJobs').child(user.uid).child(id).update({key:id})
-                
+                .then((snap) => {
+                    let id = snap.key
+                    firebase.database().ref('/RecruitmentJobs').child(user.uid).child(id).update({ key: id })
+
+             
+                // 
+                let thisUserJobs = []
+                firebase.auth().onAuthStateChanged((user) => {
+                    let currentUser = user.uid
+                    firebase.database().ref('/RecruitmentJobs').child(currentUser).on('value', (snap) => {
+                        var dbData = snap.val()
+                        for (var key in dbData) {
+                            thisUserJobs.push(dbData[key])
+        
+                        }
+                        // console.log('snpa', thisUserJobs)
+                        dispatch({ type: ActionTypes.CURRENTCOMPANYJOBS, payload: thisUserJobs })
+                    })
+                })
             })
         })
     }
 }
-export function deleteJobAction(key){
+export function deleteJobAction(key) {
     console.log(key)
-    return dispatch=>{
+    return dispatch => {
+        firebase.auth().onAuthStateChanged((user) => {
+            firebase.database().ref('/RecruitmentJobs').child(user.uid).child(key).remove()
+        })
 
-    }
+
+}
 }
 
 export function fetchFirebaseAction() {
     return dispatch => {
-        let thisUserJobs =[]
+        let thisUserJobs = []
         firebase.auth().onAuthStateChanged((user) => {
             let currentUser = user.uid
             firebase.database().ref('/RecruitmentJobs').child(currentUser).on('value', (snap) => {
                 var dbData = snap.val()
-                for (var key in dbData ){
-                        thisUserJobs.push(dbData[key])
+                for (var key in dbData) {
+                    thisUserJobs.push(dbData[key])
 
-                    }
+                }
                 // console.log('snpa', thisUserJobs)
-                dispatch({ type: ActionTypes.CURRENTCOMPANYJOBS, payload: thisUserJobs})
+                dispatch({ type: ActionTypes.CURRENTCOMPANYJOBS, payload: thisUserJobs })
             })
         })
     }
 }
 
+export function signoutAction() {
+    return dispatch => {
+        firebase.auth().signOut().then(function () {
+            window.location.reload();
+            // localStorage.clear()
+            // setTimeout(function () {
+                history.push('/')
+            // }, 3000);
+        }).catch(function (error) {
+            alert(error.msg)
+        });
+    }
+}
 
 
 

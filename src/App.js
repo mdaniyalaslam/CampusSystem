@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Routers from './Route';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import store from './store';
 // import { Divider } from 'material-ui';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // import Background from './img/material.jpg'
 
@@ -18,12 +19,12 @@ class App extends Component {
   render() {
     return (
       // <div style={img}>
-      <div>
+      <MuiThemeProvider>
+        <Provider store={store}>
+          <Routers />
+        </Provider>
+      </MuiThemeProvider>
 
-      <Provider store={store}>
-        <Routers />
-      </Provider>
-      </div>
     );
   }
 }

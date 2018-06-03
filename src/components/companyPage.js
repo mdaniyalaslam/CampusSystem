@@ -12,15 +12,28 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 // import FlatButton from 'material-ui/FlatButton';
-// import RaisedButton from 'material-ui/RaisedButton';
+import RaisedButton from 'material-ui/RaisedButton';
 // import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
-import { submitAction, fetchFirebaseAction, deleteJobAction } from '../store/action/action';
+import { submitAction, fetchFirebaseAction, deleteJobAction, signoutAction } from '../store/action/action';
 import CircularProgress from 'material-ui/CircularProgress';
+import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
+// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
+import Paper from 'material-ui/Paper';
 
 
 
 const styles = {
+    paper: {
+        height: 120,
+        width: 120,
+        margin: 20,
+        textAlign: 'center',
+        display: 'inline-block',
+
+    },
     headline: {
         fontSize: 24,
         paddingTop: 16,
@@ -48,11 +61,12 @@ class CompanyPage extends Component {
         super(props);
         this.state = {
             slideIndex: 0,
+            openForm: false,
             open: false,
             companyName: '',
             jobDesig: '',
             jobDesc: '',
-            dataArr: [] 
+            dataArr: []
 
         };
         // this.add = this.add.bind(this)
@@ -60,12 +74,8 @@ class CompanyPage extends Component {
         this._onChangeJobDesig = this._onChangeJobDesig.bind(this)
         this._onChangeJobDesc = this._onChangeJobDesc.bind(this)
         this._submit = this._submit.bind(this)
-        // this._deleteJob = this._deleteJob.bind(this)
+        this._signout = this._signout.bind(this)
         this.handleClose = this.handleClose.bind(this)
-
-        console.log('cons', this.props.currentCompanyJobs)
-
-
     }
     _onChangeCompanyName(event) {
         this.setState({ companyName: event.target.value })
@@ -76,9 +86,14 @@ class CompanyPage extends Component {
     _onChangeJobDesc(event) {
         this.setState({ jobDesc: event.target.value })
     }
-
+    handleToggle = () => { console.log('doneee'); this.setState({ open: !this.state.open }) };
+    handleCloseForm = () => {
+        this.setState({ openForm: false });
+    };
+    // handleToggle = () => this.setState({ open: true});
     handleOpen = () => {
-        this.setState({ open: true });
+        console.log('open')
+        this.setState({ openForm: true });
     };
 
     handleClose = () => {
@@ -93,31 +108,31 @@ class CompanyPage extends Component {
         }
         // console.log(companyDetails)
         this.props.submitDetails(jobDetails)
+        this.handleCloseForm()
+        // this.props.fetchFirebase()
+        // this.componentWillMount()
 
-        this.handleClose()
     }
-    _deleteJob(key){
+    _deleteJob(key) {
         // console.log('delete', key)
         this.props.deleteJob(key)
+        this.props.fetchFirebase()
+    }
+    _signout(){
+        this.props.signout()
     }
 
     componentWillMount() {
         this.props.fetchFirebase()
-        // var comingItems = this.props.currentCompanyJobs
-        // var thatArr = this.state.dataArr
-
-
-
-        // this.setState({arr:this.props.currentCompanyJobs})
     }
+
     render() {
-        console.log('will',this.props.currentCompanyJobs)
-        
+
         const actions = [
             <FlatButton
                 label="Cancel"
                 primary={true}
-                onClick={this.handleClose}
+                onClick={this.handleCloseForm}
             />,
             <FlatButton
                 label="Submit"
@@ -127,88 +142,174 @@ class CompanyPage extends Component {
             />,
         ];
 
-        // if (this.props.currentCompanyJobs === '') {
         if (this.props.currentCompanyJobs.length === 0) {
-            return <div className='row container'>
-            <div className='col-sm'></div>
-            <div className='col-sm-1'>
-            <CircularProgress size={100} thickness={5} />
+            return <div>
+                <AppBar
+                    title="Title"
+                    iconClassNameRight="muidocs-icon-navigation-expand-more"
+                />
+                <Drawer
+                    docked={false}
+                    width={200}
+                    open={this.state.open}
+                    onRequestChange={(open) => this.setState({ open })}
+                >
+                    <MenuItem>   <Paper style={styles.paper} zDepth={2} circle={true} /> </MenuItem>
+                    <MenuItem onClick={this._signout}>SignOut</MenuItem>
+                    {/* <MenuItem onClick={this.handleClose}>Menu Item 2</MenuItem> */}
+                </Drawer>
+                 <Dialog
+                        // style={styles.dilog}
+                        title="Add Details!"
+                        actions={actions}
+                        modal={false}
+                        open={this.state.openForm}
+                        onRequestClose={this.handleCloseForm}
+                        autoScrollBodyContent={true}
+                    >
+                        <TextField floatingLabelText="Company Name"
+                            hintText="Enter Company Name Here"
+                            name="companyName"
+                            fullWidth={true}
+                            value={this.state.companyName}
+                            onChange={this._onChangeCompanyName}
+                        />
+                        <TextField floatingLabelText="Job Designation"
+                            hintText="Enter Job Designation Here"
+                            name="jobDesig"
+                            fullWidth={true}
+                            value={this.state.jobDesig}
+                            onChange={this._onChangeJobDesig}
+                        />
+                        <TextField floatingLabelText="Job Description"
+                            hintText="Enter Job Desctiption Here"
+                            name="jobDesc"
+                            fullWidth={true}
+                            multiLine={true}
+                            rows={2}
+                            value={this.state.jobDesc}
+                            onChange={this._onChangeJobDesc}
+                        />
+                    </Dialog>
+                <div className="container">
+
+                    <Tabs
+                        onChange={this.handleChange}
+                        value={this.state.slideIndex}
+                    >
+                        <Tab style={{ backgroundColor: "white", color: 'black' }} label="All Job Posts" value={0} />
+                    </Tabs>
+                    <FloatingActionButton style={styles.addBtn}>
+                        <ContentAdd
+                            onClick={this.handleOpen}
+                        />
+                    </FloatingActionButton>
+                    <br />
+                    <br />
+                    <div className='row container'>
+                        <div className='col-sm'></div>
+                        <div className='col-sm-1'>
+                            <CircularProgress size={100} thickness={5} />
+                        </div>
+                        <div className='col-sm'></div>
+                    </div>
+                </div>
             </div>
-            <div className='col-sm'></div>
-          </div>
-     
+
         }
         else return (
-            <div className='container'>
-
-                {/* TAB */}
-                <Tabs
-                    onChange={this.handleChange}
-                    value={this.state.slideIndex}
-                >
-                    <Tab style={{ backgroundColor: "white", color: 'black' }} label="All Job Posts" value={0} />
-                </Tabs>
-                <FloatingActionButton style={styles.addBtn}>
-                    <ContentAdd
-                        onClick={this.handleOpen}
-                    />
-                </FloatingActionButton>
-                <br />
-                <br />
-                
-                {
-                    this.props.currentCompanyJobs.map((value, ind) => {
-                        console.log('map', value)
-                        return <Card key={ind}>
-                            <CardHeader
-                                title={value.companyName}
-                                subtitle={value.jobDesig}
-                                actAsExpander={true}
-                                showExpandableButton={true}
-                            />
-                            <CardActions>
-                                <FlatButton label="Delete Job" secondary={true} onClick={this._deleteJob.bind(this, value.key)} />
-                                {/* <FlatButton label="Action2" /> */}
-                            </CardActions>
-                            <CardText expandable={true}>{value.jobDesc}</CardText>
-                        </Card>
-                    })
-                }
-                <Dialog
-                    // style={styles.dilog}
-                    title="Add Details!"
-                    actions={actions}
-                    modal={false}
+            <div className=''>
+            
+                <Drawer
+                    docked={false}
+                    width={200}
                     open={this.state.open}
-                    onRequestClose={this.handleClose}
-                    autoScrollBodyContent={true}
+                    onRequestChange={(open) => this.setState({ open })}
                 >
-                    <TextField floatingLabelText="Company Name"
-                        hintText="Enter Company Name Here"
-                        name="companyName"
-                        fullWidth={true}
-                        value={this.state.companyName}
-                        onChange={this._onChangeCompanyName}
-                    />
-                    <TextField floatingLabelText="Job Designation"
-                        hintText="Enter Job Designation Here"
-                        name="jobDesig"
-                        fullWidth={true}
-                        value={this.state.jobDesig}
-                        onChange={this._onChangeJobDesig}
-                    />
-                    <TextField floatingLabelText="Job Description"
-                        hintText="Enter Job Desctiption Here"
-                        name="jobDesc"
-                        fullWidth={true}
-                        multiLine={true}
-                        rows={2}
-                        value={this.state.jobDesc}
-                        onChange={this._onChangeJobDesc}
-                    />
-                </Dialog>
+                    <MenuItem>   <Paper style={styles.paper} zDepth={2} circle={true} /> </MenuItem>
+                    <MenuItem onClick={this._signout}>SignOut</MenuItem>
+                    {/* <MenuItem onClick={this.handleClose}>Menu Item 2</MenuItem> */}
+                </Drawer>
+                <AppBar
+                    title="Title"
+                    iconClassNameRight="muidocs-icon-navigation-expand-more"
+                    onLeftIconButtonClick={() => this.handleToggle()}
+
+                />
+                <div className='container'>
+                    <Tabs
+                        onChange={this.handleChange}
+                        value={this.state.slideIndex}
+                    >
+                        <Tab style={{ backgroundColor: "white", color: 'black' }} label="All Job Posts" value={0} />
+                    </Tabs>
+                    <FloatingActionButton style={styles.addBtn}>
+                        <ContentAdd
+                            onClick={this.handleOpen}
+                        />
+                    </FloatingActionButton>
+                    <br />
+                    <br />
+
+
+
+                    {
+                        this.props.currentCompanyJobs.map((value, ind) => {
+                            // console.log('map', value)
+                            return <Card key={ind}>
+                                <CardHeader
+                                    title={'Company Name: '  + value.companyName}
+                                    subtitle={'Designation: '  + value.jobDesig}
+                                    actAsExpander={true}
+                                    showExpandableButton={true}
+                                />
+                                <CardActions>
+                                    <FlatButton label="Delete Job" secondary={true} onClick={this._deleteJob.bind(this, value.key)} />
+                                    <FlatButton label="Show Applied" />
+                                </CardActions>
+                                <CardText expandable={true}>{'Job Desctiption: ' + value.jobDesc}</CardText>
+                            </Card>
+
+                        })
+                    }
+                    <Dialog
+                        // style={styles.dilog}
+                        title="Add Details!"
+                        actions={actions}
+                        modal={false}
+                        open={this.state.openForm}
+                        onRequestClose={this.handleCloseForm}
+                        autoScrollBodyContent={true}
+                    >
+                        <TextField floatingLabelText="Company Name"
+                            hintText="Enter Company Name Here"
+                            name="companyName"
+                            fullWidth={true}
+                            value={this.state.companyName}
+                            onChange={this._onChangeCompanyName}
+                        />
+                        <TextField floatingLabelText="Job Designation"
+                            hintText="Enter Job Designation Here"
+                            name="jobDesig"
+                            fullWidth={true}
+                            value={this.state.jobDesig}
+                            onChange={this._onChangeJobDesig}
+                        />
+                        <TextField floatingLabelText="Job Description"
+                            hintText="Enter Job Desctiption Here"
+                            name="jobDesc"
+                            fullWidth={true}
+                            multiLine={true}
+                            rows={2}
+                            value={this.state.jobDesc}
+                            onChange={this._onChangeJobDesc}
+                        />
+                    </Dialog>
+                </div>
             </div>
         )
+
+
     }
 }
 
@@ -223,7 +324,8 @@ function mapDispatchToProp(dispatch) {
     return ({
         submitDetails: (jobDetails) => { dispatch(submitAction(jobDetails)) },
         fetchFirebase: (jobDetails) => { dispatch(fetchFirebaseAction(jobDetails)) },
-        deleteJob: (key) => { dispatch(deleteJobAction(key)) }
+        deleteJob: (key) => { dispatch(deleteJobAction(key)) },
+        signout: (key) => { dispatch(signoutAction(key)) }
     })
 }
 
