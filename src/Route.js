@@ -13,6 +13,7 @@ import CompanyPage from './components/companyPage';
 
 
 import history from './History';
+import AllStudents from './components/allStudents';
 
 // export const history = createBrowserHistory()
 
@@ -28,6 +29,7 @@ class Routers extends Component {
                     <Route  path="/studentPage" component={StudentPage} />
                     <Route  path="/companyPage" component={CompanyPage} />
                     <Route path="/signup" component={Signup} />
+                    <Route path="/allStudents" component={AllStudents} />
                     
                 </div>
             </Router>

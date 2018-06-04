@@ -6,16 +6,17 @@ const INITIAL_STATE = {
     error:'',
     currentCompanyJobs:'',
     allCompanyJobs:'',
-    currentStudent:''
+    currentStudent:'',
+    appliedJobs:'',
+    allStudents:'',
 }
 
 export default (state = INITIAL_STATE, action) => {
-    
+    // console.log('red', appliedJobs)
     switch (action.type) {
 
         case ActionTypes.ERROR:
-            return ({
-                
+            return ({            
                 ...state,
                 error: action.payload
             })
@@ -29,17 +30,25 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 currentCompanyJobs: action.payload
             })
-        case ActionTypes.ALLCOMPANYJOBS:
-        
+        case ActionTypes.ALLCOMPANYJOBS: 
             return ({
                 ...state,
                 allCompanyJobs: action.payload
             })
         case ActionTypes.CURRENTSTUDENT:
-        
             return ({
                 ...state,
                 currentStudent: action.payload
+            })
+        case ActionTypes.APPLIEDJOBS:
+            return ({
+                ...state,
+                appliedJobs: action.payload
+            })
+        case ActionTypes.ALLSTUDENTS:
+            return ({
+                ...state,
+                allStudents: action.payload
             })
        
         default:

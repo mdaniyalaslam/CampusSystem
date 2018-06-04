@@ -14,7 +14,14 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 // import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
-import { allJobsFetchFirebaseAction, signoutAction, submitStudentDetailsAction, fetchStudentDetailsAction } from '../store/action/action';
+import { allJobsFetchFirebaseAction, 
+    signoutAction, 
+    submitStudentDetailsAction, 
+    fetchStudentDetailsAction, 
+    applyJobAction,
+    deleteAppliedJobAction, 
+    fetchAppliedJobAction 
+} from '../store/action/action';
 import CircularProgress from 'material-ui/CircularProgress';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
@@ -71,10 +78,15 @@ class StudentPage extends Component {
             cgpa: '',
             dataArr: [],
             isEdit: '',
-            openStudentDetails: false
+            openStudentDetails: false,
+            openAppliedJobs: false,
+            currentStudent:{},
+            appliedJobs:[]
 
         };
         this.props.fetchStudentDetails()
+        // this.props.fetchAppliedJob()
+        
 
         // this.add = this.add.bind(this)
         this._onChangeFullName = this._onChangeFullName.bind(this)
@@ -94,19 +106,28 @@ class StudentPage extends Component {
     _onChangecgpa(event) {
         this.setState({ cgpa: event.target.value })
     }
-    handleToggle = () => { console.log('doneee'); this.setState({ open: !this.state.open }) };
+    handleToggle = () => { this.setState({ open: !this.state.open }) };
     handleCloseForm = () => {
-        this.setState({ openForm: false, openStudentDetails: false, open: false });
+        this.setState({ openForm: false, openStudentDetails: false, open: false, openAppliedJobs:false });
     };
     // handleToggle = () => this.setState({ open: true});
     handleOpen = () => {
         this.setState({ openForm: true });
     };
     handleOpenStudentDetails = () => {
-        this.setState({ openStudentDetails: true });
+        if(this.props.currentStudent === null){
+            alert('No Profile Exist!')
+        }
+        else this.setState({ openStudentDetails: true, currentStudent: this.props.currentStudent});
+    };
+    handleOpenAppliedJobs = () => {
+        if(this.props.appliedJobs === null){
+            alert('No Applied Jobs!')
+        }
+        else this.setState({ openAppliedJobs: true, appliedJobs: this.props.appliedJobs});
     };
     _addProfile() {
-        if (this.props.currentStudent === "") {
+        if (this.props.currentStudent === null) {
             this.handleOpen()
         }
         else { alert('Profile already Exist!') }
@@ -135,22 +156,37 @@ class StudentPage extends Component {
         this.props.deleteJob(key)
         this.props.fetchFirebase()
     }
+    _deleteAppliedJob(key) {
+        // console.log('delete', key)
+        this.props.deleteAppliedJob(key)
+        this.props.fetchAppliedJob()
+    }
+    _applyJob(key, uid){
+        var appliedJobsComing = this.props.appliedJobs
+        var appliedKeys =[]
+        for (var i in appliedJobsComing ){
+            appliedKeys.push(appliedJobsComing[i].key)
+        }
+        for (var i=0 ; i<=appliedKeys.length; i++){
+            if(key === appliedKeys[i]){
+                alert('Already Applied!')
+            }
+        else this.props.applyJob(key, uid)
+        }
+    }
+    
     _signout() {
         this.props.signout()
     }
 
     componentWillMount() {
         this.props.allFetchFirebase()
+        this.props.fetchAppliedJob()
+
 
     }
-    // componentDidMount(){
 
-    //     this.props.allFetchFirebase()
-    // }
     render() {
-        console.log('props', this.props.currentStudent)
-
-
         const actions = [
             <FlatButton
                 label="Cancel"
@@ -161,7 +197,7 @@ class StudentPage extends Component {
                 label="Submit"
                 primary={true}
                 keyboardFocused={true}
-                // onClick={this._submit}
+                onClick={this._submit}
             />,
         ];
         const newActions = [
@@ -175,6 +211,13 @@ class StudentPage extends Component {
                 primary={true}
                 keyboardFocused={true}
                 onClick={this._submit}
+            />,
+        ];
+        const appliedJobActions = [
+            <FlatButton
+                label="Close"
+                primary={true}
+                onClick={this.handleCloseForm}
             />,
         ];
 
@@ -264,7 +307,7 @@ class StudentPage extends Component {
 
                     <MenuItem onClick={this._addProfile}>Add Profile</MenuItem>
                     <MenuItem onClick={this.handleOpenStudentDetails}>View Profile</MenuItem>
-                    <MenuItem >Applied Jobs</MenuItem>
+                    <MenuItem onClick={this.handleOpenAppliedJobs} >Applied Jobs</MenuItem>
                     <MenuItem onClick={this._signout}>SignOut</MenuItem>
                     {/* <MenuItem onClick={this.handleClose}>Menu Item 2</MenuItem> */}
                 </Drawer>
@@ -297,13 +340,15 @@ class StudentPage extends Component {
                                 />
                                 <CardActions>
                                     {/* <FlatButton label="Delete Job" secondary={true} onClick={this._deleteJob.bind(this, value.key)} /> */}
-                                    <FlatButton label="Apply" />
+                                    <FlatButton label="Apply" onClick={this._applyJob.bind(this, value.key, value.uid)}  />
                                 </CardActions>
                                 <CardText expandable={true}>{'Job Desctiption: ' + value.jobDesc}</CardText>
                             </Card>
 
                         })
+                        
                     }
+                        {/* {this.props.allCompanyJobs.map((value, ind) => {console.log('2ndMap', value)})} */}
 
                     <Dialog
                         // style={styles.dilog}
@@ -346,17 +391,47 @@ class StudentPage extends Component {
                         onRequestClose={this.handleCloseForm}
                         autoScrollBodyContent={true}
                     >
-                        {/* <MobileTearSheet> */}
-                        {/* {console.log('draw', this.props.currentStudent.fullName)} */}
                             <List>
-                                <ListItem primaryText={'Full Name: '+ this.props.currentStudent.fullName}  />
-                                <ListItem primaryText={'Qualification: '+ this.props.currentStudent.qualification}  />
-                                <ListItem primaryText={'Last Exam CGPA: '+ this.props.currentStudent.cgpa}  />
+                                <ListItem primaryText={'Full Name: '+ this.state.currentStudent.fullName}  />
+                                <ListItem primaryText={'Qualification: '+ this.state.currentStudent.qualification}  />
+                                <ListItem primaryText={'Last Exam CGPA: '+ this.state.currentStudent.cgpa}  />
              
              
                             </List>
-                            {/* <Divider /> */}
-                        {/* </MobileTearSheet> */}
+                    </Dialog>
+
+                    <Dialog
+                        // style={styles.dilog}
+                        title="Applied Jobs!"
+                        actions={appliedJobActions}
+                        modal={false}
+                        open={this.state.openAppliedJobs}
+                        onRequestClose={this.handleCloseForm}
+                        autoScrollBodyContent={true}
+                    >
+
+                     {                         
+                      
+                        this.state.appliedJobs.map((value, ind) => {
+                            return <Card key={ind}>
+                                <CardHeader
+                                    title={'Company Name: ' + value.companyName}
+                                    subtitle={'Designation: ' + value.jobDesig}
+                                    actAsExpander={true}
+                                    showExpandableButton={true}
+                                />
+                                <CardActions>
+                                    <FlatButton label="Delete"
+                                     onClick={this._deleteAppliedJob.bind(this, value.key)}  
+                                     />
+                                </CardActions>
+                                <CardText expandable={true}>{'Job Desctiption: ' + value.jobDesc}</CardText>
+                            </Card>
+
+                        })
+                        
+                    }
+
                     </Dialog>
                 </div>
             </div>
@@ -369,7 +444,8 @@ class StudentPage extends Component {
 function mapStateToProp(state) {
     return ({
         allCompanyJobs: state.root.allCompanyJobs,
-        currentStudent: state.root.currentStudent
+        currentStudent: state.root.currentStudent,
+        appliedJobs: state.root.appliedJobs,
     })
 }
 function mapDispatchToProp(dispatch) {
@@ -377,7 +453,10 @@ function mapDispatchToProp(dispatch) {
         submitStudentDetails: (studentDetails) => { dispatch(submitStudentDetailsAction(studentDetails)) },
         allFetchFirebase: () => { dispatch(allJobsFetchFirebaseAction()) },
         fetchStudentDetails: () => { dispatch(fetchStudentDetailsAction()) },
-        signout: (key) => { dispatch(signoutAction(key)) }
+        signout: (key) => { dispatch(signoutAction(key)) },
+        applyJob: (key, uid) => { dispatch(applyJobAction(key, uid)) },
+        fetchAppliedJob: () => { dispatch(fetchAppliedJobAction()) },
+        deleteAppliedJob: (key) => { dispatch(deleteAppliedJobAction(key)) }
 
 
     })

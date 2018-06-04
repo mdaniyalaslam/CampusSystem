@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import {changeUserName} from '../store/action/action';
 // SWIPABLE
@@ -15,13 +15,15 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 // import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
-import { submitAction, fetchFirebaseAction, deleteJobAction, signoutAction } from '../store/action/action';
+import {fetchAllStudentsAction, signoutAction } from '../store/action/action';
 import CircularProgress from 'material-ui/CircularProgress';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 // import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
+// import { Link } from 'react-router-dom';
+
 
 
 
@@ -47,16 +49,11 @@ const styles = {
         float: "right",
         marginTop: -20
     },
-    radioButton: {
-        marginTop: 16,
-    },
-    dilog: {
-        width: "60%",
-        // marginLeft: 
-    }
+
+
 };
 
-class CompanyPage extends Component {
+class AllStudents extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -64,29 +61,13 @@ class CompanyPage extends Component {
             openForm: false,
             open: false,
             companyName: '',
-            jobDesig: '',
-            jobDesc: '',
-            dataArr: []
 
-        };
-        // this.add = this.add.bind(this)
-        this._onChangeCompanyName = this._onChangeCompanyName.bind(this)
-        this._onChangeJobDesig = this._onChangeJobDesig.bind(this)
-        this._onChangeJobDesc = this._onChangeJobDesc.bind(this)
-        this._submit = this._submit.bind(this)
+        };      
+       
         this._signout = this._signout.bind(this)
         this.handleClose = this.handleClose.bind(this)
-        this._viewAllStudents = this._viewAllStudents.bind(this)
     }
-    _onChangeCompanyName(event) {
-        this.setState({ companyName: event.target.value })
-    }
-    _onChangeJobDesig(event) {
-        this.setState({ jobDesig: event.target.value })
-    }
-    _onChangeJobDesc(event) {
-        this.setState({ jobDesc: event.target.value })
-    }
+   
     handleToggle = () => { console.log('doneee'); this.setState({ open: !this.state.open }) };
     handleCloseForm = () => {
         this.setState({ openForm: false });
@@ -101,51 +82,18 @@ class CompanyPage extends Component {
         this.setState({ open: false });
     };
 
-    _submit() {
-        let jobDetails = {
-            companyName: this.state.companyName,
-            jobDesig: this.state.jobDesig,
-            jobDesc: this.state.jobDesc
-        }
-        // console.log(companyDetails)
-        this.props.submitDetails(jobDetails)
-        this.handleCloseForm()
-        // this.props.fetchFirebase()
-        // this.componentWillMount()
 
-    }
-    _deleteJob(key) {
-        // console.log('delete', key)
-        this.props.deleteJob(key)
-        this.props.fetchFirebase()
-    }
     _signout(){
         this.props.signout()
     }
-    _viewAllStudents(){
-    }
 
     componentWillMount() {
-        this.props.fetchFirebase()
+        this.props.fetchAllStudents()
     }
 
     render() {
 
-        const actions = [
-            <FlatButton
-                label="Cancel"
-                primary={true}
-                onClick={this.handleCloseForm}
-            />,
-            <FlatButton
-                label="Submit"
-                primary={true}
-                keyboardFocused={true}
-                onClick={this._submit}
-            />,
-        ];
-        
-        if (this.props.currentCompanyJobs.length === 0) {
+        if (this.props.allStudents.length === 0) {
             return <div>
                 <AppBar
                     title="Campus Recruitment System"
@@ -161,39 +109,7 @@ class CompanyPage extends Component {
                     <MenuItem onClick={this._signout}>SignOut</MenuItem>
                     {/* <MenuItem onClick={this.handleClose}>Menu Item 2</MenuItem> */}
                 </Drawer>
-                 <Dialog
-                        // style={styles.dilog}
-                        title="Add Details!"
-                        actions={actions}
-                        modal={false}
-                        open={this.state.openForm}
-                        onRequestClose={this.handleCloseForm}
-                        autoScrollBodyContent={true}
-                    >
-                        <TextField floatingLabelText="Company Name"
-                            hintText="Enter Company Name Here"
-                            name="companyName"
-                            fullWidth={true}
-                            value={this.state.companyName}
-                            onChange={this._onChangeCompanyName}
-                        />
-                        <TextField floatingLabelText="Job Designation"
-                            hintText="Enter Job Designation Here"
-                            name="jobDesig"
-                            fullWidth={true}
-                            value={this.state.jobDesig}
-                            onChange={this._onChangeJobDesig}
-                        />
-                        <TextField floatingLabelText="Job Description"
-                            hintText="Enter Job Desctiption Here"
-                            name="jobDesc"
-                            fullWidth={true}
-                            multiLine={true}
-                            rows={2}
-                            value={this.state.jobDesc}
-                            onChange={this._onChangeJobDesc}
-                        />
-                    </Dialog>
+
                 <div className="container">
 
                     <Tabs
@@ -202,11 +118,6 @@ class CompanyPage extends Component {
                     >
                         <Tab style={{ backgroundColor: "white", color: 'black' }} label="All Job Posts" value={0} />
                     </Tabs>
-                    <FloatingActionButton style={styles.addBtn}>
-                        <ContentAdd
-                            onClick={this.handleOpen}
-                        />
-                    </FloatingActionButton>
                     <br />
                     <br />
                     <div className='row container'>
@@ -231,7 +142,7 @@ class CompanyPage extends Component {
                 >
                     <MenuItem>   <Paper style={styles.paper} zDepth={3} circle={true} /> </MenuItem>
                     <MenuItem onClick={this.handleClose}>Our Profile</MenuItem>
-                  <Link to="/allStudents">  <MenuItem onClick={this._viewAllStudents}>View All Students</MenuItem> </Link>
+                    <MenuItem onClick={this.handleClose}>Goto Main</MenuItem>
                     <MenuItem onClick={this._signout}>SignOut</MenuItem>
                 </Drawer>
                 <AppBar
@@ -247,18 +158,12 @@ class CompanyPage extends Component {
                     >
                         <Tab style={{ backgroundColor: "white", color: 'black' }} label="All Job Posts" value={0} />
                     </Tabs>
-                    <FloatingActionButton style={styles.addBtn}>
-                        <ContentAdd
-                            onClick={this.handleOpen}
-                        />
-                    </FloatingActionButton>
+
                     <br />
                     <br />
-
-
 
                     {
-                        this.props.currentCompanyJobs.map((value, ind) => {
+                        this.props.allStudents .map((value, ind) => {
                             // console.log('map', value)
                             return <Card key={ind}>
                                 <CardHeader
@@ -276,39 +181,7 @@ class CompanyPage extends Component {
 
                         })
                     }
-                    <Dialog
-                        // style={styles.dilog}
-                        title="Add Details!"
-                        actions={actions}
-                        modal={false}
-                        open={this.state.openForm}
-                        onRequestClose={this.handleCloseForm}
-                        autoScrollBodyContent={true}
-                    >
-                        <TextField floatingLabelText="Company Name"
-                            hintText="Enter Company Name Here"
-                            name="companyName"
-                            fullWidth={true}
-                            value={this.state.companyName}
-                            onChange={this._onChangeCompanyName}
-                        />
-                        <TextField floatingLabelText="Job Designation"
-                            hintText="Enter Job Designation Here"
-                            name="jobDesig"
-                            fullWidth={true}
-                            value={this.state.jobDesig}
-                            onChange={this._onChangeJobDesig}
-                        />
-                        <TextField floatingLabelText="Job Description"
-                            hintText="Enter Job Desctiption Here"
-                            name="jobDesc"
-                            fullWidth={true}
-                            multiLine={true}
-                            rows={2}
-                            value={this.state.jobDesc}
-                            onChange={this._onChangeJobDesc}
-                        />
-                    </Dialog>
+
                 </div>
             </div>
         )
@@ -317,20 +190,18 @@ class CompanyPage extends Component {
     }
 }
 
-
-
 function mapStateToProp(state) {
     return ({
-        currentCompanyJobs: state.root.currentCompanyJobs
+        allStudents: state.root.allStudents
     })
 }
 function mapDispatchToProp(dispatch) {
     return ({
-        submitDetails: (jobDetails) => { dispatch(submitAction(jobDetails)) },
-        fetchFirebase: () => { dispatch(fetchFirebaseAction()) },
-        deleteJob: (key) => { dispatch(deleteJobAction(key)) },
+
+        fetchAllStudents: () => { dispatch(fetchAllStudentsAction()) },
+
         signout: (key) => { dispatch(signoutAction(key)) }
     })
 }
 
-export default connect(mapStateToProp, mapDispatchToProp)(CompanyPage);
+export default connect(mapStateToProp, mapDispatchToProp)(AllStudents);
