@@ -125,25 +125,56 @@ export function submitAction(jobDetails) {
                     let id = snap.key
                     firebase.database().ref('/RecruitmentJobs').child(user.uid).child(id).update({ key: id })
 
-             
-                // 
-                let thisUserJobs = []
-                firebase.auth().onAuthStateChanged((user) => {
-                    let currentUser = user.uid
-                    firebase.database().ref('/RecruitmentJobs').child(currentUser).on('value', (snap) => {
-                        var dbData = snap.val()
-                        for (var key in dbData) {
-                            thisUserJobs.push(dbData[key])
-        
-                        }
-                        // console.log('snpa', thisUserJobs)
-                        dispatch({ type: ActionTypes.CURRENTCOMPANYJOBS, payload: thisUserJobs })
+
+                    // 
+                    let thisUserJobs = []
+                    firebase.auth().onAuthStateChanged((user) => {
+                        let currentUser = user.uid
+                        firebase.database().ref('/RecruitmentJobs').child(currentUser).on('value', (snap) => {
+                            var dbData = snap.val()
+                            for (var key in dbData) {
+                                thisUserJobs.push(dbData[key])
+
+                            }
+                            // console.log('snpa', thisUserJobs)
+                            dispatch({ type: ActionTypes.CURRENTCOMPANYJOBS, payload: thisUserJobs })
+                        })
                     })
                 })
+        })
+    }
+}
+export function submitStudentDetailsAction(studentDetails) {
+    console.log('action')
+    return dispatch => {
+        firebase.auth().onAuthStateChanged((user) => {
+            firebase.database().ref('/RecruitmentStudentsQualification').child(user.uid).set(studentDetails)
+            .then((snap)=>{
+                firebase.database().ref('/RecruitmentStudentsQualification').child(user.uid).update({key:user.uid, isEdit:false})
             })
         })
     }
 }
+
+
+export function fetchStudentDetailsAction(){
+    // console.log('fetch student')
+    return dispatch =>{
+        firebase.auth().onAuthStateChanged((user) => {
+            firebase.database().ref('/RecruitmentStudentsQualification').child(user.uid).once('value', (snap)=>{
+                var thatStudent = snap.val()
+                // console.log('student', thatStudent)
+                
+                dispatch({ type: ActionTypes.CURRENTSTUDENT, payload: thatStudent })
+            })
+           
+        })
+    }
+
+}
+
+
+
 export function deleteJobAction(key) {
     console.log(key)
     return dispatch => {
@@ -152,7 +183,7 @@ export function deleteJobAction(key) {
         })
 
 
-}
+    }
 }
 
 export function fetchFirebaseAction() {
@@ -177,34 +208,34 @@ export function allJobsFetchFirebaseAction() {
     return dispatch => {
         var allCompanyJobs = []
         firebase.database().ref('/RecruitmentJobs').on('child_added', (snap) => {
-                    var dbData = snap.val()
-                    console.log('snap', dbData)
-                    for (var key in dbData) {
-                        allCompanyJobs.push(dbData[key])
-                        
-                    }
-                    dispatch({ type: ActionTypes.ALLCOMPANYJOBS, payload: allCompanyJobs })
-                    // console.log('snap',dbData)
-                    // console.log('snap2', allCompanyJobs )
-                    // allCompanyJobs.map((mapAllCompanyJobs)=>{console.log(mapAllCompanyJobs)})
-                    // console.log('snap', allCompanyJobs[0])
-                })
-                
-                
-                
-                // firebase.auth().onAuthStateChanged((user) => {
+            var dbData = snap.val()
+            // console.log('snap', dbData)
+            for (var key in dbData) {
+                allCompanyJobs.push(dbData[key])
+
+            }
+            dispatch({ type: ActionTypes.ALLCOMPANYJOBS, payload: allCompanyJobs })
+            // console.log('snap',dbData)
+            // console.log('snap2', allCompanyJobs )
+            // allCompanyJobs.map((mapAllCompanyJobs)=>{console.log(mapAllCompanyJobs)})
+            // console.log('snap', allCompanyJobs[0])
+        })
+
+
+
+        // firebase.auth().onAuthStateChanged((user) => {
         //     let currentUser = user.uid
         //     firebase.database().ref('/RecruitmentJobs').child(currentUser).on('value', (snap) => {
-            //         var dbData = snap.val()
-            //         for (var key in dbData) {
-                //             allCompanyJobs.push(dbData[key])
+        //         var dbData = snap.val()
+        //         for (var key in dbData) {
+        //             allCompanyJobs.push(dbData[key])
 
-                //         }
-                //         // console.log('snpa', thisUserJobs)
-                //         // dispatch({ type: ActionTypes.ALLCOMPANYJOBS, payload: allCompanyJobs })
-                //     })
-                // })
-            }
+        //         }
+        //         // console.log('snpa', thisUserJobs)
+        //         // dispatch({ type: ActionTypes.ALLCOMPANYJOBS, payload: allCompanyJobs })
+        //     })
+        // })
+    }
 }
 
 export function signoutAction() {
@@ -213,7 +244,7 @@ export function signoutAction() {
             window.location.reload();
             // localStorage.clear()
             // setTimeout(function () {
-                history.push('/')
+            history.push('/')
             // }, 3000);
         }).catch(function (error) {
             alert(error.msg)
