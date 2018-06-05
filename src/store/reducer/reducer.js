@@ -8,7 +8,7 @@ const INITIAL_STATE = {
     allCompanyJobs:'',
     currentStudent:'',
     appliedJobs:'',
-    allStudents:'',
+    allStudents:[],
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -46,6 +46,7 @@ export default (state = INITIAL_STATE, action) => {
                 appliedJobs: action.payload
             })
         case ActionTypes.ALLSTUDENTS:
+        // console.log('red', action.payload)
             return ({
                 ...state,
                 allStudents: action.payload

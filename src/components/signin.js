@@ -6,6 +6,10 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import { FlatButton } from 'material-ui';
+import Dialog from 'material-ui/Dialog';
+import history from '../History';
+
 
 const styles = {
     paper: {
@@ -15,14 +19,15 @@ const styles = {
         textAlign: 'center',
         display: 'inline-block',
         padding: 10,
-        borderRadius : 15
-        
+        borderRadius: 15,
+        open: false,
+
     },
     btn: {
         margin: 12,
         marginTop: 20,
         width: 300
-        
+
     },
     block: {
         maxWidth: 250,
@@ -43,19 +48,28 @@ class Signin extends Component {
             userName: '',
             password: '',
             check: '',
-            error : ''
+            error: '',
+            code:''
         }
 
 
         this.signin = this.signin.bind(this);
+        this._adminPannelSubmit = this._adminPannelSubmit.bind(this);
         this._onChangeEmail = this._onChangeEmail.bind(this);
         this._onChangePassword = this._onChangePassword.bind(this);
+        this._onChangeCode = this._onChangeCode.bind(this);
         this.checker = this.checker.bind(this)
 
     }
 
 
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
 
+    handleClose = () => {
+        this.setState({ open: false });
+    };
 
     signin() {
         let check = this.state.check
@@ -70,7 +84,7 @@ class Signin extends Component {
             user: check
         }
 
-        if (check === 'student'){
+        if (check === 'student') {
             this.props.signinwithEmailPassword(studentInfo)
         }
         else (
@@ -90,10 +104,15 @@ class Signin extends Component {
             email: event.target.value
         })
     }
- 
+
     _onChangePassword(event) {
         this.setState({
             password: event.target.value
+        })
+    }
+    _onChangeCode(event) {
+        this.setState({
+            code: event.target.value
         })
     }
 
@@ -108,13 +127,56 @@ class Signin extends Component {
         // })
 
     }
+    _adminPannelSubmit() {
+        let code = this.state.code
+        console.log(code)
+        // this.props.adminPannelSubmit()
+        if(code === 'QW4HD'){
+            history.push('/adminPannel')
+        }
+        else alert('Wrong Code!')
+        this.handleClose()
+
+    }
 
 
     render() {
+        const actions = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onClick={this.handleClose}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                keyboardFocused={true}
+                onClick={this._adminPannelSubmit}
+            />,
+        ];
         return (
+
             <div className="row">
+                <Dialog
+                    title="Admin Pannel Access"
+                    actions={actions}
+                    modal={false}
+                    open={this.state.open}
+                    onRequestClose={this.handleClose}
+                    autoScrollBodyContent={true}
+                >
+                  <TextField floatingLabelText="Organization Code"
+                            hintText="Enter code Here"
+                            name="companyName"
+                            fullWidth={true}
+                            value={this.state.code}
+                            onChange={this._onChangeCode}
+                        />
+
+                </Dialog>
                 <div className="col"></div>
                 <div className="col-sm-4">
+
                     <Paper style={styles.paper} zDepth={5} >
                         <h1>Signin</h1>
                         <TextField floatingLabelText="Email"
@@ -123,7 +185,7 @@ class Signin extends Component {
                             // errorText={this.state.error}
                             value={this.state.email} onChange={this._onChangeEmail}
                         />
-         
+
                         <TextField floatingLabelText="Password"
                             hintText="Enter Password Here"
                             name="password"
@@ -149,17 +211,23 @@ class Signin extends Component {
                             style={styles.btn}
                             primary={true}
                             onClick={this.signin}
-                            />
-                        <br/>
-                        <p>Don't Have an account? <Link to="signup">Signup</Link> here!</p> 
+                        />
+                        <br />
+                        <p>Don't Have an account? <Link to="signup">Signup</Link> here!</p>
 
                         {/* Handling errors */}
-                            <span style={{color:'red'}}>{this.props.error}</span>
-                            <span style={{color:'red'}}>{this.props.radioError}</span>
-                        
+                        <span style={{ color: 'red' }}>{this.props.error}</span>
+                        <span style={{ color: 'red' }}>{this.props.radioError}</span>
+
                     </Paper>
+
                 </div>
-                <div className="col"></div>
+                <div className="col">
+                    <FlatButton label="Admin Pannel"
+                        style={styles.btn}
+                        primary={true}
+                        onClick={this.handleOpen}
+                    /></div>
             </div>
         )
     }
@@ -173,8 +241,8 @@ function mapStateToProp(state) {
 }
 function mapDispatchToProp(dispatch) {
     return ({
-        // changeUserName: ()=>{dispatch(changeUserName())}
-        signinwithEmailPassword: (info) => { dispatch(signinAction(info)); }
+        signinwithEmailPassword: (info) => { dispatch(signinAction(info)); },
+        // adminPannelSubmit: (info) => { dispatch(adminPannelAction(info)); }
 
     })
 }

@@ -223,6 +223,8 @@ export function allJobsFetchFirebaseAction() {
             for (var key in dbData) {
                 allCompanyJobs.push(dbData[key])
             }
+            console.log('allstudents',allCompanyJobs)
+            
             dispatch({ type: ActionTypes.ALLCOMPANYJOBS, payload: allCompanyJobs })
         })
 
@@ -265,12 +267,20 @@ export function fetchAllStudentsAction(){
     return dispatch => {
         var allStudents = []
         firebase.database().ref('/RecruitmentStudentsQualification').on('child_added', (snap) => {
-            var dbData = snap.val()
-            for (var key in dbData) {
-                allStudents.push(dbData[key])
-            }
-            console.log('allstudents',allStudents)
-            // dispatch({ type: ActionTypes.ALLCOMPANYJOBS, payload: allCompanyJobs })
+            var dbData = snap.val();
+            allStudents.push(dbData)
+  
+
+            // for(var i=0; i<=dbData.length; i++){
+            //     if(dbData[1] !== null){
+            //         allStudents.push(dbData[1])
+            //     }
+            // }
+            // for (var key in dbData) {
+            //     allStudents.push(dbData[key])
+            // }
+            // console.log('allstudents',allStudents)
+            dispatch({ type: ActionTypes.ALLSTUDENTS, payload: allStudents })
         })
 
     }
@@ -291,6 +301,13 @@ export function signoutAction() {
     }
 }
 
+
+// export function adminPannelAction(){
+//     console.log('ad')
+//     // return dispatch=>{
+
+//     // }
+// }
 
 
 

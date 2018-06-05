@@ -6,6 +6,9 @@ import Signup from './components/signup';
 import Signin from './components/signin';
 import StudentPage from './components/studentPage';
 import CompanyPage from './components/companyPage';
+import AdminPannel from './components/adminPannel';
+import AdminStudentList from './components/adminPannel';
+import AdminJobList from './components/adminJobList';
 
 
 // import Chat from './components/chat';
@@ -30,6 +33,9 @@ class Routers extends Component {
                     <Route  path="/companyPage" component={CompanyPage} />
                     <Route path="/signup" component={Signup} />
                     <Route path="/allStudents" component={AllStudents} />
+                    <Route path="/adminPannel" component={AdminPannel} />
+                    <Route path="/adminStudentList" component={AdminStudentList} />
+                    <Route path="/adminJobList" component={AdminJobList} />
                     
                 </div>
             </Router>

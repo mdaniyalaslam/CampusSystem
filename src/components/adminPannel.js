@@ -63,7 +63,7 @@ const styles = {
 
 };
 
-class AllStudents extends Component {
+class AdminPannel extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -109,45 +109,8 @@ class AllStudents extends Component {
     }
 
     render() {
-        if (this.props.allStudents.length === 0) {
-            return <div>
-                <AppBar
-                    title="Campus Recruitment System"
-                    iconClassNameRight="muidocs-icon-navigation-expand-more"
-                />
-                <Drawer
-                    docked={false}
-                    width={200}
-                    open={this.state.open}
-                    onRequestChange={(open) => this.setState({ open })}
-                >
-                    <MenuItem>   <Paper style={styles.paper} zDepth={3} circle={true} /> </MenuItem>
-                    <MenuItem onClick={this.handleClose}>Our Profile</MenuItem>
-                    <Link to="/companyPage">  <MenuItem >Goto Main</MenuItem> </Link>
-                    <MenuItem onClick={this._signout}>SignOut</MenuItem>
-                </Drawer>
-
-                <div className="container">
-
-                    <Tabs
-                    >
-                        <Tab style={{ backgroundColor: "white", color: 'black' }} label="All Students" value={0} />
-                    </Tabs>
-                    <br />
-                    <br />
-                    <div className='row container'>
-                        <div className='col-sm'></div>
-                        <div className='col-sm-1'>
-                            <CircularProgress size={100} thickness={5} />
-                            
-                        </div>
-                        <div className='col-sm'></div>
-                    </div>
-                </div>
-            </div>
-
-        }
-        else return (
+       
+        return (
             <div className=''>
             
                 <Drawer
@@ -157,9 +120,9 @@ class AllStudents extends Component {
                     onRequestChange={(open) => this.setState({ open })}
                 >
                     <MenuItem>   <Paper style={styles.paper} zDepth={3} circle={true} /> </MenuItem>
-                    <MenuItem onClick={this.handleClose}>Our Profile</MenuItem>
-                    <Link to="/companyPage">  <MenuItem >Goto Main</MenuItem> </Link>
-                    <MenuItem onClick={this._signout}>SignOut</MenuItem>
+                    <Link to="/adminStudentList">  <MenuItem >List All Students</MenuItem> </Link>
+                    <Link to="/adminJobList">  <MenuItem >List All Jobs</MenuItem> </Link>
+                    <Link to="/">  <MenuItem >Sign Out</MenuItem> </Link>
                 </Drawer>
                 <AppBar
                     title="Campus Recruitment System"
@@ -172,13 +135,13 @@ class AllStudents extends Component {
                         onChange={this.handleChange}
                         value={this.state.slideIndex}
                     >
-                        <Tab style={{ backgroundColor: "white", color: 'black' }} label="All Students" value={0} />
+                        <Tab style={{ backgroundColor: "white", color: 'black' }} label="Admin Pannel" value={0} />
                     </Tabs>
 
                     <br />
                     <br />
 
-                    {
+                    {/* {
                         // console.log('allpage', this.props.allStudents)
                         this.props.allStudents .map((value, ind) => {
                             console.log('map', value)
@@ -189,7 +152,7 @@ class AllStudents extends Component {
                             </Paper>
 
                         })
-                    }
+                    } */}
 
                 </div>
             </div>
@@ -213,4 +176,4 @@ function mapDispatchToProp(dispatch) {
     })
 }
 
-export default connect(mapStateToProp, mapDispatchToProp)(AllStudents);
+export default connect(mapStateToProp, mapDispatchToProp)(AdminPannel);
