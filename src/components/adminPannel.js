@@ -172,7 +172,7 @@ function mapDispatchToProp(dispatch) {
 
         fetchAllStudents: () => { dispatch(fetchAllStudentsAction()) },
 
-        signout: (key) => { dispatch(signoutAction(key)) }
+        // signout: (key) => { dispatch(signoutAction(key)) }
     })
 }
 

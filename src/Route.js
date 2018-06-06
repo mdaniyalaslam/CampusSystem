@@ -7,7 +7,7 @@ import Signin from './components/signin';
 import StudentPage from './components/studentPage';
 import CompanyPage from './components/companyPage';
 import AdminPannel from './components/adminPannel';
-import AdminStudentList from './components/adminPannel';
+import AdminStudentList from './components/adminStudentList';
 import AdminJobList from './components/adminJobList';
 
 

@@ -9,6 +9,7 @@ const INITIAL_STATE = {
     currentStudent:'',
     appliedJobs:'',
     allStudents:[],
+    radioError:''
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -50,6 +51,12 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 allStudents: action.payload
+            })
+        case ActionTypes.RADIOERROR:
+        // console.log('red', action.payload)
+            return ({
+                ...state,
+                radioError: action.payload
             })
        
         default:

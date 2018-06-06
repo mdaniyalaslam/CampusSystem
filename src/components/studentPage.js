@@ -34,6 +34,9 @@ import Divider from 'material-ui/Divider';
 
 
 const styles = {
+    card:{
+        marginTop:5
+            },
     paper: {
         height: 120,
         width: 120,
@@ -144,9 +147,15 @@ class StudentPage extends Component {
             qualification: this.state.qualification,
             cgpa: this.state.cgpa
         }
+        if (this.state.fullName !== '' && this.state.qualification!=='' && this.state.cgpa!==''){
+            this.props.submitStudentDetails(studentDetails)
+            // console.log(this.state)
+            this.handleCloseForm()
+
+        }
+        else alert('Please fill all tha fields')
         // console.log(companyDetails)
-        this.props.submitStudentDetails(studentDetails)
-        this.handleCloseForm()
+        // this.props.submitStudentDetails(studentDetails)
         // this.props.fetchFirebase()
         // this.componentWillMount()
 
@@ -173,6 +182,10 @@ class StudentPage extends Component {
             }
         else this.props.applyJob(key, uid)
         }
+        this.props.fetchAppliedJob()
+        
+        this.props.allFetchFirebase()
+        
     }
     
     _signout() {
@@ -182,8 +195,10 @@ class StudentPage extends Component {
     componentWillMount() {
         this.props.allFetchFirebase()
         this.props.fetchAppliedJob()
-
-
+    }
+    componentDidMount(){
+        this.props.fetchAppliedJob()
+        
     }
 
     render() {
@@ -202,16 +217,16 @@ class StudentPage extends Component {
         ];
         const newActions = [
             <FlatButton
-                label="Cancel"
+                label="Close"
                 primary={true}
                 onClick={this.handleCloseForm}
             />,
-            <FlatButton
-                label="Update"
-                primary={true}
-                keyboardFocused={true}
-                onClick={this._submit}
-            />,
+            // <FlatButton
+            //     label="Update"
+            //     primary={true}
+            //     keyboardFocused={true}
+            //     // onClick={this._submit}
+            // />,
         ];
         const appliedJobActions = [
             <FlatButton
@@ -331,7 +346,7 @@ class StudentPage extends Component {
 
                     {
                         this.props.allCompanyJobs.map((value, ind) => {
-                            return <Card key={ind}>
+                            return <Card style={styles.card} key={ind}>
                                 <CardHeader
                                     title={'Company Name: ' + value.companyName}
                                     subtitle={'Designation: ' + value.jobDesig}

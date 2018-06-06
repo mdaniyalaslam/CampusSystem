@@ -49,7 +49,7 @@ class Signin extends Component {
             password: '',
             check: '',
             error: '',
-            code:''
+            code: ''
         }
 
 
@@ -71,7 +71,8 @@ class Signin extends Component {
         this.setState({ open: false });
     };
 
-    signin() {
+    signin(e) {
+e.preventDefault()
         let check = this.state.check
         let studentInfo = {
             email: this.state.email,
@@ -131,7 +132,7 @@ class Signin extends Component {
         let code = this.state.code
         console.log(code)
         // this.props.adminPannelSubmit()
-        if(code === 'QW4HD'){
+        if (code === 'QW4HD') {
             history.push('/adminPannel')
         }
         else alert('Wrong Code!')
@@ -165,61 +166,70 @@ class Signin extends Component {
                     onRequestClose={this.handleClose}
                     autoScrollBodyContent={true}
                 >
-                  <TextField floatingLabelText="Organization Code"
-                            hintText="Enter code Here"
-                            name="companyName"
-                            fullWidth={true}
-                            value={this.state.code}
-                            onChange={this._onChangeCode}
-                        />
+                    <TextField floatingLabelText="Organization Code"
+                        hintText="Enter code Here"
+                        name="companyName"
+                        fullWidth={true}
+                        value={this.state.code}
+                        onChange={this._onChangeCode}
+                    />
 
                 </Dialog>
                 <div className="col"></div>
                 <div className="col-sm-4">
-
-                    <Paper style={styles.paper} zDepth={5} >
-                        <h1>Signin</h1>
-                        <TextField floatingLabelText="Email"
-                            hintText="Enter Email Here"
-                            name="email"
-                            // errorText={this.state.error}
-                            value={this.state.email} onChange={this._onChangeEmail}
-                        />
-
-                        <TextField floatingLabelText="Password"
-                            hintText="Enter Password Here"
-                            name="password"
-                            value={this.state.password} onChange={this._onChangePassword}
-                        />
-
-                        <RadioButtonGroup style={{ display: "flex" }} name="shipSpeed">
-                            <RadioButton
-                                value="student"
-                                label="Student"
-                                style={styles.radioButton}
-                                onClick={this.checker}
+                    <form onSubmit={this.signin}>
+                        <Paper style={styles.paper} zDepth={5} >
+                            <h1>Signin</h1>
+                            <TextField floatingLabelText="Email"
+                                hintText="Enter Email Here"
+                                name="email"
+                                type='email'
+                                // errorText={this.state.error}
+                                value={this.state.email} onChange={this._onChangeEmail}
                             />
-                            <RadioButton
-                                value="company"
-                                label="Company"
-                                style={styles.radioButton}
-                                onClick={this.checker}
+
+                            <TextField floatingLabelText="Password"
+                                hintText="Enter Password Here"
+                                name="password"
+                                type='password'
+                                value={this.state.password} onChange={this._onChangePassword}
                             />
-                        </RadioButtonGroup>
 
-                        <RaisedButton label="Signin"
-                            style={styles.btn}
-                            primary={true}
-                            onClick={this.signin}
-                        />
-                        <br />
-                        <p>Don't Have an account? <Link to="signup">Signup</Link> here!</p>
+                            <RadioButtonGroup style={{ display: "flex" }} name="shipSpeed" required>
+                                <RadioButton
+                                    value="student"
+                                    label="Student"
+                                    required
+                                    type="radio"
+                                    style={styles.radioButton}
+                                    onClick={this.checker}
+                                    />
+                                <RadioButton
+                                    value="company"
+                                    label="Company"
+                                    type="radio"
+                                    required
+                                    style={styles.radioButton}
+                                    onClick={this.checker}
+                                />
+                            </RadioButtonGroup>
 
-                        {/* Handling errors */}
-                        <span style={{ color: 'red' }}>{this.props.error}</span>
-                        <span style={{ color: 'red' }}>{this.props.radioError}</span>
+                            <RaisedButton label="Signin"
+                                style={styles.btn}
+                                primary={true}
+                                type='submit'
+                                // onClick={this.signin}
+                            />
+                            <br />
+                            <p>Don't Have an account? <Link to="signup">Signup</Link> here!</p>
 
-                    </Paper>
+                            {/* Handling errors */}
+                            <span style={{ color: 'red' }}>{this.props.error}</span><br />
+                            <span style={{ color: 'red' }}>{this.props.radioError}</span><br />
+
+
+                        </Paper>
+                    </form>
 
                 </div>
                 <div className="col">

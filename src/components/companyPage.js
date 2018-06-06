@@ -26,6 +26,9 @@ import Paper from 'material-ui/Paper';
 
 
 const styles = {
+    card:{
+marginTop:5
+    },
     paper: {
         height: 120,
         width: 120,
@@ -107,8 +110,13 @@ class CompanyPage extends Component {
             jobDesig: this.state.jobDesig,
             jobDesc: this.state.jobDesc
         }
+        if (this.state.companyName !== '' && this.state.jobDesc!=='' && this.state.jobDesig!==''){
+            this.props.submitDetails(jobDetails)
+            // console.log(this.state)
+
+        }
+        else alert('Please fill all tha fields')
         // console.log(companyDetails)
-        this.props.submitDetails(jobDetails)
         this.handleCloseForm()
         // this.props.fetchFirebase()
         // this.componentWillMount()
@@ -230,7 +238,7 @@ class CompanyPage extends Component {
                     onRequestChange={(open) => this.setState({ open })}
                 >
                     <MenuItem>   <Paper style={styles.paper} zDepth={3} circle={true} /> </MenuItem>
-                    <MenuItem onClick={this.handleClose}>Our Profile</MenuItem>
+                    {/* <MenuItem onClick={this.handleClose}>Our Profile</MenuItem> */}
                   <Link to="/allStudents">  <MenuItem onClick={this._viewAllStudents}>View All Students</MenuItem> </Link>
                     <MenuItem onClick={this._signout}>SignOut</MenuItem>
                 </Drawer>
@@ -260,7 +268,7 @@ class CompanyPage extends Component {
                     {
                         this.props.currentCompanyJobs.map((value, ind) => {
                             // console.log('map', value)
-                            return <Card key={ind}>
+                            return <Card style={styles.card} key={ind}>
                                 <CardHeader
                                     title={'Company Name: '  + value.companyName}
                                     subtitle={'Designation: '  + value.jobDesig}
@@ -269,13 +277,14 @@ class CompanyPage extends Component {
                                 />
                                 <CardActions>
                                     <FlatButton label="Delete Job" secondary={true} onClick={this._deleteJob.bind(this, value.key)} />
-                                    <FlatButton label="Show Applied" />
+                                    {/* <FlatButton label="Show Applied" /> */}
                                 </CardActions>
                                 <CardText expandable={true}>{'Job Desctiption: ' + value.jobDesc}</CardText>
                             </Card>
 
                         })
                     }
+                        <form onSubmit={this._submit}>
                     <Dialog
                         // style={styles.dilog}
                         title="Add Details!"
@@ -284,9 +293,10 @@ class CompanyPage extends Component {
                         open={this.state.openForm}
                         onRequestClose={this.handleCloseForm}
                         autoScrollBodyContent={true}
-                    >
+                        >
                         <TextField floatingLabelText="Company Name"
                             hintText="Enter Company Name Here"
+                            required
                             name="companyName"
                             fullWidth={true}
                             value={this.state.companyName}
@@ -294,6 +304,7 @@ class CompanyPage extends Component {
                         />
                         <TextField floatingLabelText="Job Designation"
                             hintText="Enter Job Designation Here"
+                            required
                             name="jobDesig"
                             fullWidth={true}
                             value={this.state.jobDesig}
@@ -301,6 +312,7 @@ class CompanyPage extends Component {
                         />
                         <TextField floatingLabelText="Job Description"
                             hintText="Enter Job Desctiption Here"
+                            required
                             name="jobDesc"
                             fullWidth={true}
                             multiLine={true}
@@ -308,7 +320,10 @@ class CompanyPage extends Component {
                             value={this.state.jobDesc}
                             onChange={this._onChangeJobDesc}
                         />
+                        {/* <RaisedButton label='sub'/> */}
                     </Dialog>
+                    </form>
+                    
                 </div>
             </div>
         )
